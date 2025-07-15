@@ -1,24 +1,19 @@
-name: Django CI
+name: Django CI with Docker
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ]  # وقتی روی main کدی push شد اجرا میشه
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  build-test:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
+      - name: دریافت کد پروژه
+        uses: actions/checkout@v3
+
+      - name: ساخت کانتینرها و اجرای تست
+        run: |
+            docker-compose up -d --build
